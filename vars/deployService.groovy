@@ -1,8 +1,14 @@
-def call(String serverIp, String deployPath) {
-    sshagent(credentials: ['ec2-ssh']) {
+def call(String deployPath) {
+
+    stage("Deploy Application") {
         sh """
-            ssh -o StrictHostKeyChecking=no ubuntu@${serverIp} \
-            "cd ${deployPath} && docker compose pull && docker compose up -d"
+            echo "Deploying locally on the same EC2..."
+
+            cd ${deployPath}
+
+            docker compose down || true
+            docker compose pull
+            docker compose up -d --remove-orphans
         """
     }
 }
