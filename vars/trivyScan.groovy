@@ -1,9 +1,11 @@
-// trivyScan(image)
 def call(String image) {
-    stage('Trivy Scan') {
-        sh """
-           set -o pipefail
-           trivy image --severity CRITICAL,HIGH ${image} || true
-        """
-    }
+
+    echo "Running Trivy scan on image: ${image}"
+
+    sh """
+        trivy image ${image} \
+            --severity HIGH,CRITICAL \
+            --exit-code 1 \
+            --no-progress
+    """
 }
