@@ -1,12 +1,30 @@
+//def call(String image, String tag, String credId) {
+
+   // withCredentials([usernamePassword(credentialsId: credId, 
+  //                                    usernameVariable: 'USER', 
+       //                               passwordVariable: 'PASS')]) {
+//
+       // sh """
+        //    echo "$PASS" | docker login -u "$USER" --password-stdin
+         //   docker push ${image}:${tag}
+        //    docker logout
+      //  """
+  //  }
+//}
+
+
 def call(String image, String tag, String credId) {
 
-    withCredentials([usernamePassword(credentialsId: credId, 
-                                      usernameVariable: 'USER', 
-                                      passwordVariable: 'PASS')]) {
+    withCredentials([usernamePassword(
+        credentialsId: credId,
+        usernameVariable: 'USER',
+        passwordVariable: 'PASS'
+    )]) {
 
         sh """
             echo "$PASS" | docker login -u "$USER" --password-stdin
             docker push ${image}:${tag}
+            docker push ${image}:latest
             docker logout
         """
     }
